@@ -1,0 +1,31 @@
+<!doctype html>
+
+<html>
+
+<head>
+	<title>Test Display/Edit Page</title>
+	<script src="./jquery.js"></script>
+	<script src="./angular.js"></script>
+	<script src="./app.js"></script>
+	<script src="./third-party-jquery-plugin.js"></script>
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+
+</head>
+
+<body ng-app="myApp">
+	<div ng-controller="MyController">
+		<div>Controller count: {{ obj.count }}</div>
+
+		<div class="container">
+			<div>Custom directive that wraps a jQuery plugin. Databinding is done with "ngModelController".</div>
+			<div custom-directive-with-ng-model ng-model="obj.count" ng-change="onChange()"></div>
+		</div>
+
+		<div class="container">
+			<div>Custom directive that wraps a jQuery plugin. Databinding is done with "="</div>
+			<div custom-directive-with-equals model="obj.count" on-change="onChange()"></div>
+		</div>
+	</div>
+</body>
+
+</html>

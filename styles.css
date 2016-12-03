@@ -1,0 +1,23 @@
+* {
+    font-size: 20px;
+}
+
+.third-party-jquery-plugin {
+    background: blue;
+    color: white;
+}
+
+.third-party-jquery-plugin input {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+div {
+    text-align: center;
+}
+
+.container {
+    border: 1px solid black;
+    margin-top: 40px;
+}
