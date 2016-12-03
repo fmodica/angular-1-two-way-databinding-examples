@@ -71,7 +71,7 @@
                 };
 
                 $element.on("countUpdate", function () {
-                    // Simulate conditions for an "$apply already in progress" error
+                    // Simulate conditions for an "$apply already in progress" error.
                     scope.$apply(function () {
                         scope.$evalAsync(function () {
                             ngModelCtrl.$setViewValue(jQueryPluginApi.getCount());
