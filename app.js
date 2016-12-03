@@ -58,4 +58,27 @@
             }
         };
     });
+
+    app.directive("customDirectiveWithNgModelAvoidingDigestError", function () {
+        return {
+            require: "ngModel",
+            link: function (scope, $element, attrs, ngModelCtrl) {
+                var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
+
+                ngModelCtrl.$render = function () {
+                    alert("Rendering new value in customDirectiveWithNgModelAvoidingDigestError directive: " + ngModelCtrl.$viewValue);
+                    jQueryPluginApi.setCount(ngModelCtrl.$viewValue);
+                };
+
+                $element.on("countUpdate", function () {
+                    // Simulate conditions for an "$apply already in progress" error
+                    scope.$apply(function () {
+                        scope.$evalAsync(function () {
+                            ngModelCtrl.$setViewValue(jQueryPluginApi.getCount());
+                        });
+                    });
+                });
+            }
+        };
+    });
 })();

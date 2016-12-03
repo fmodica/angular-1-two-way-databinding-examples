@@ -17,13 +17,18 @@
 		<div>Controller count: {{ obj.count }}</div>
 
 		<div class="container">
-			<div>Custom directive that wraps a jQuery plugin. Databinding is done with "ngModelController".</div>
+			<div>custom-directive-with-ng-model</div>
 			<div custom-directive-with-ng-model ng-model="obj.count" ng-change="onChange()"></div>
 		</div>
 
 		<div class="container">
-			<div>Custom directive that wraps a jQuery plugin. Databinding is done with "="</div>
+			<div>custom-directive-with-equals</div>
 			<div custom-directive-with-equals model="obj.count" on-change="onChange()"></div>
+		</div>
+
+		<div class="container">
+			<div>custom-directive-with-ng-model-avoiding-digest-error</div>
+			<div custom-directive-with-ng-model-avoiding-digest-error ng-model="obj.count" ng-change="onChange()"></div>
 		</div>
 	</div>
 </body>
