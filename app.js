@@ -9,7 +9,7 @@
         };
 
         $scope.onChange = function () {
-            console.log("Value in controller is " + $scope.obj.count);
+            alert("Value in controller is " + $scope.obj.count);
         };
     });
 
@@ -20,15 +20,19 @@
             link: function (scope, $element, attrs, ngModelCtrl) {
                 var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
 
+                // This executes when the model changes (but not when this directive 
+                // updates the model with $setViewValue below).
                 ngModelCtrl.$render = function () {
+                    // Update the DOM (in this case we update thirdPartyJQueryPlugin).
                     console.log("Rendering new value in ngModelBindingToPrimitive directive: " + ngModelCtrl.$viewValue);
                     jQueryPluginApi.setCount(ngModelCtrl.$viewValue);
                 };
 
                 $element.on("countUpdate", function () {
-                    scope.$apply(function () {
-                        ngModelCtrl.$setViewValue(jQueryPluginApi.getCount());
-                    });
+                    // Update the model. Any "ng-change" callback will execute after the
+                    // model is updated.
+                    ngModelCtrl.$setViewValue(jQueryPluginApi.getCount());
+                    scope.$apply();
                 });
             }
         };
@@ -47,8 +51,12 @@
                 };
 
                 $element.on("countUpdate", function () {
-                    // Simulate conditions for an "$apply already in progress" error.
+                    // Simulate a digest already in progress.
                     scope.$apply(function () {
+                        // Use "$evalAsync" instead of "$apply" because the latter won't throw
+                        // an "$apply already in progress" error if we are in the middle of a 
+                        // digest cycle, but it will schedule an additional digest cycle if
+                        // needed.
                         scope.$evalAsync(function () {
                             ngModelCtrl.$setViewValue(jQueryPluginApi.getCount());
                         });
@@ -67,18 +75,25 @@
             link: function (scope, $element, attrs, ngModelCtrl) {
                 var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
 
+                // Watch the model for changes. This will run both when the controller
+                // updates the model AND when this directive updates the model
+                // (potentially causing an unnecessary re-render of the DOM in the 
+                // latter case).
                 scope.$watch(function () {
                     return scope.model;
                 }, function () {
+                    // Update the DOM (in this case we update thirdPartyJQueryPlugin).
                     console.log("Rendering new value in equalsBindingToPrimitive directive: " + scope.model);
                     jQueryPluginApi.setCount(scope.model);
                 });
 
                 $element.on("countUpdate", function () {
+                    // Update the model. Execute the onChange callback manually after
+                    // the model is updated. Note that our "$watch" function above will
+                    // run, potentially causing an unnecessary re-render of the DOM.
                     scope.model = jQueryPluginApi.getCount();
-                    scope.$apply(function () {
-                        scope.onChange();
-                    });
+                    scope.$apply();
+                    scope.onChange();
                 });
             }
         };
@@ -101,28 +116,29 @@
                 });
 
                 $element.on("countUpdate", function () {
-                    // Simulate conditions for an "$apply already in progress" error.
+                    // Simulate a digest already in progress.
                     scope.$apply(function () {
                         scope.model = jQueryPluginApi.getCount();
 
-                        // We cannot call $scope.$apply or we will get an "$apply already in progress" error.
+                        // We cannot call "$apply" to force a digest cycle because we will get
+                        // an "$apply already in progress" error.
 
-                        // Error!
-                        // scope.$apply(function () {
-                        //     scope.onChange();
-                        // });
+                        // scope.$apply()
+                        // scope.onChange();
 
-                        // $scope.evalAsync won't work either because it will evaluate inside the
-                        // the current digest cycle, after which the controller's value would be 
-                        // updated.
+                        // "evalAsync" won't work because it will evaluate "onChange" inside 
+                        // the current digest cycle, so the controller's value won't be 
+                        // updated yet,
 
                         // scope.$evalAsync(function () {
-                        //     // Model won't be updatd yet!
+                        //     // Model won't be updated yet!
                         //     scope.onChange();
                         // });
 
-                        // We have to force another digest cycle in a way that does not trigger an error.
-                        // $timeout works but may cause flicker since this will be executed after the DOM renders.
+                        // "$timeout" will run our "onChange" callback after the current 
+                        // digest cycle is over, ensuring that our model is updated. But it 
+                        // executes after the DOM has rendered, so there is risk that the UI 
+                        // may flicker.
                         $timeout(function () {
                             scope.onChange()
                         });
@@ -149,6 +165,9 @@
                 });
 
                 $element.on("countUpdate", function () {
+                    // Update the model. In this case the model is a copy of the reference
+                    // to the object in the controller. Thus we are updating properties on
+                    // the controller object directly.
                     scope.$evalAsync(function () {
                         scope.model.count = jQueryPluginApi.getCount();
                         scope.onChange();
