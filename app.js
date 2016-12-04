@@ -13,7 +13,7 @@
         };
     });
 
-    app.directive("customDirectiveWithNgModel", function () {
+    app.directive("ngModelBindingToPrimitive", function () {
         return {
             require: "ngModel",
             scope: {},
@@ -21,7 +21,7 @@
                 var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
 
                 ngModelCtrl.$render = function () {
-                    console.log("Rendering new value in customDirectiveWithNgModel directive: " + ngModelCtrl.$viewValue);
+                    console.log("Rendering new value in ngModelBindingToPrimitive directive: " + ngModelCtrl.$viewValue);
                     jQueryPluginApi.setCount(ngModelCtrl.$viewValue);
                 };
 
@@ -34,33 +34,7 @@
         };
     });
 
-    app.directive("customDirectiveWithEquals", function () {
-        return {
-            scope: {
-                model: "=",
-                onChange: "&"
-            },
-            link: function (scope, $element, attrs, ngModelCtrl) {
-                var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
-
-                scope.$watch(function () {
-                    return scope.model;
-                }, function () {
-                    console.log("Rendering new value in customDirectiveWithEquals directive: " + scope.model);
-                    jQueryPluginApi.setCount(scope.model);
-                });
-
-                $element.on("countUpdate", function () {
-                    scope.model = jQueryPluginApi.getCount();
-                    scope.$apply(function () {
-                        scope.onChange();
-                    });
-                });
-            }
-        };
-    });
-
-    app.directive("customDirectiveWithNgModelAvoidingDigestError", function () {
+    app.directive("ngModelBindingToPrimitiveAvoidingDigestError", function () {
         return {
             require: "ngModel",
             scope: {},
@@ -68,7 +42,7 @@
                 var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
 
                 ngModelCtrl.$render = function () {
-                    console.log("Rendering new value in customDirectiveWithNgModelAvoidingDigestError directive: " + ngModelCtrl.$viewValue);
+                    console.log("Rendering new value in ngModelBindingToPrimitiveAvoidingDigestError directive: " + ngModelCtrl.$viewValue);
                     jQueryPluginApi.setCount(ngModelCtrl.$viewValue);
                 };
 
@@ -84,7 +58,7 @@
         };
     });
 
-    app.directive("customDirectiveWithEqualsAvoidingDigestError", function ($timeout) {
+    app.directive("equalsBindingToPrimitive", function () {
         return {
             scope: {
                 model: "=",
@@ -96,7 +70,33 @@
                 scope.$watch(function () {
                     return scope.model;
                 }, function () {
-                    console.log("Rendering new value in customDirectiveWithEqualAvoidingDigestError directive: " + scope.model);
+                    console.log("Rendering new value in equalsBindingToPrimitive directive: " + scope.model);
+                    jQueryPluginApi.setCount(scope.model);
+                });
+
+                $element.on("countUpdate", function () {
+                    scope.model = jQueryPluginApi.getCount();
+                    scope.$apply(function () {
+                        scope.onChange();
+                    });
+                });
+            }
+        };
+    });
+
+    app.directive("equalsBindingToPrimitiveAvoidingDigestError", function ($timeout) {
+        return {
+            scope: {
+                model: "=",
+                onChange: "&"
+            },
+            link: function (scope, $element, attrs, ngModelCtrl) {
+                var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
+
+                scope.$watch(function () {
+                    return scope.model;
+                }, function () {
+                    console.log("Rendering new value in equalsBindingToPrimitiveAvoidingDigestError directive: " + scope.model);
                     jQueryPluginApi.setCount(scope.model);
                 });
 
@@ -132,7 +132,7 @@
         };
     });
 
-    app.directive("customDirectiveWithEqualsBindingToObject", function () {
+    app.directive("equalsBindingToObject", function () {
         return {
             scope: {
                 model: "=",
@@ -144,7 +144,7 @@
                 scope.$watch(function () {
                     return scope.model.count;
                 }, function () {
-                    console.log("Rendering new value in customDirectiveWithEqualsAndModelObject directive: " + scope.model.count);
+                    console.log("Rendering new value in equalsBindingToObject directive: " + scope.model.count);
                     jQueryPluginApi.setCount(scope.model.count);
                 });
 
