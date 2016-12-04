@@ -17,23 +17,28 @@
 		<div>Controller count: {{ obj.count }}</div>
 
 		<div class="container">
-			<div>custom-directive-with-ng-model</div>
+			<div>Basic two-way databinding with ng-model</div>
 			<div custom-directive-with-ng-model ng-model="obj.count" ng-change="onChange()"></div>
 		</div>
 
 		<div class="container">
-			<div>custom-directive-with-equals</div>
-			<div custom-directive-with-equals model="obj.count" on-change="onChange()"></div>
-		</div>
-
-		<div class="container">
-			<div>custom-directive-with-ng-model-avoiding-digest-error</div>
+			<div>Basic two-way databinding with ng-model (avoiding a digest-in-progress error)</div>
 			<div custom-directive-with-ng-model-avoiding-digest-error ng-model="obj.count" ng-change="onChange()"></div>
 		</div>
 
 		<div class="container">
-			<div>custom-directive-with-equals-avoiding-digest-error</div>
+			<div>Basic two-way databinding with scope "=" binding to a primitive</div>
+			<div custom-directive-with-equals model="obj.count" on-change="onChange()"></div>
+		</div>
+
+		<div class="container">
+			<div>Basic two-way databinding with scope "=" binding to a primitive (avoiding a digest-in-progress error)</div>
 			<div custom-directive-with-equals-avoiding-digest-error model="obj.count" on-change="onChange()"></div>
+		</div>
+
+		<div class="container">
+			<div>Basic two-way databinding with scope "=" binding to an object</div>
+			<div custom-directive-with-equals-binding-to-object model="obj" on-change="onChange()"></div>
 		</div>
 	</div>
 </body>

@@ -9,18 +9,19 @@
         };
 
         $scope.onChange = function () {
-            alert("Value in controller is " + $scope.obj.count);
+            console.log("Value in controller is " + $scope.obj.count);
         };
     });
 
     app.directive("customDirectiveWithNgModel", function () {
         return {
             require: "ngModel",
+            scope: {},
             link: function (scope, $element, attrs, ngModelCtrl) {
                 var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
 
                 ngModelCtrl.$render = function () {
-                    alert("Rendering new value in customDirectiveWithNgModel directive: " + ngModelCtrl.$viewValue);
+                    console.log("Rendering new value in customDirectiveWithNgModel directive: " + ngModelCtrl.$viewValue);
                     jQueryPluginApi.setCount(ngModelCtrl.$viewValue);
                 };
 
@@ -45,7 +46,7 @@
                 scope.$watch(function () {
                     return scope.model;
                 }, function () {
-                    alert("Rendering new value in customDirectiveWithEquals directive: " + scope.model);
+                    console.log("Rendering new value in customDirectiveWithEquals directive: " + scope.model);
                     jQueryPluginApi.setCount(scope.model);
                 });
 
@@ -62,11 +63,12 @@
     app.directive("customDirectiveWithNgModelAvoidingDigestError", function () {
         return {
             require: "ngModel",
+            scope: {},
             link: function (scope, $element, attrs, ngModelCtrl) {
                 var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
 
                 ngModelCtrl.$render = function () {
-                    alert("Rendering new value in customDirectiveWithNgModelAvoidingDigestError directive: " + ngModelCtrl.$viewValue);
+                    console.log("Rendering new value in customDirectiveWithNgModelAvoidingDigestError directive: " + ngModelCtrl.$viewValue);
                     jQueryPluginApi.setCount(ngModelCtrl.$viewValue);
                 };
 
@@ -94,7 +96,7 @@
                 scope.$watch(function () {
                     return scope.model;
                 }, function () {
-                    alert("Rendering new value in customDirectiveWithEqualAvoidingDigestError directive: " + scope.model);
+                    console.log("Rendering new value in customDirectiveWithEqualAvoidingDigestError directive: " + scope.model);
                     jQueryPluginApi.setCount(scope.model);
                 });
 
@@ -124,6 +126,32 @@
                         $timeout(function () {
                             scope.onChange()
                         });
+                    });
+                });
+            }
+        };
+    });
+
+    app.directive("customDirectiveWithEqualsBindingToObject", function () {
+        return {
+            scope: {
+                model: "=",
+                onChange: "&"
+            },
+            link: function (scope, $element, attrs, ngModelCtrl) {
+                var jQueryPluginApi = $element.thirdPartyJQueryPlugin().data("api");
+
+                scope.$watch(function () {
+                    return scope.model.count;
+                }, function () {
+                    console.log("Rendering new value in customDirectiveWithEqualsAndModelObject directive: " + scope.model.count);
+                    jQueryPluginApi.setCount(scope.model.count);
+                });
+
+                $element.on("countUpdate", function () {
+                    scope.$evalAsync(function () {
+                        scope.model.count = jQueryPluginApi.getCount();
+                        scope.onChange();
                     });
                 });
             }
