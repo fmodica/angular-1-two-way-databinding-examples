@@ -5,6 +5,7 @@
 .third-party-jquery-plugin {
     background: blue;
     color: white;
+    cursor: pointer;
 }
 
 .third-party-jquery-plugin input {
@@ -19,5 +20,21 @@ div {
 
 .container {
     border: 1px solid black;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+h3 {
     margin-top: 40px;
+    margin-bottom: 40px;
 }

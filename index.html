@@ -5,40 +5,52 @@
 <head>
 	<title>Two-way databinding examples</title>
 	<script src="./jquery.js"></script>
+	<script src="./third-party-jquery-plugin.js"></script>
 	<script src="./angular.js"></script>
 	<script src="./app.js"></script>
-	<script src="./third-party-jquery-plugin.js"></script>
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 
 </head>
 
 <body ng-app="myApp">
 	<div ng-controller="MyController">
-		<div>Controller count: {{ obj.count }}</div>
+		<h1>Various ways of accomplishing two-way databinding in AngularJS 1</h1>
+		<h2>(our goal is to have the controller's model updated before the controller's onChange function is invoked)</h2>
+
+		<h3>Binding to a primitive (number)</h3>
 
 		<div class="container">
 			<div>ng-model binding to a primitive</div>
-			<div ng-model-binding-to-primitive ng-model="obj.count" ng-change="onChange()"></div>
+			<div ng-model-binding-to-primitive ng-model="countPrimitive" ng-change="onChange()"></div>
 		</div>
 
 		<div class="container">
-			<div>ng-model binding to a primitive (avoiding a digest-in-progress error)</div>
-			<div ng-model-binding-to-primitive-avoiding-digest-error ng-model="obj.count" ng-change="onChange()"></div>
+			<div>ng-model binding to a primitive (simulating a digest-in-progress and avoiding an error)</div>
+			<div ng-model-binding-to-primitive-avoiding-digest-error ng-model="countPrimitive" ng-change="onChange()"></div>
 		</div>
 
 		<div class="container">
 			<div>scope "=" binding to a primitive</div>
-			<div equals-binding-to-primitive model="obj.count" on-change="onChange()"></div>
+			<div equals-binding-to-primitive model="countPrimitive" on-change="onChange()"></div>
 		</div>
 
 		<div class="container">
-			<div>scope "=" binding to a primitive (avoiding a digest-in-progress error)</div>
-			<div equals-binding-to-primitive-avoiding-digest-error model="obj.count" on-change="onChange()"></div>
+			<div>scope "=" binding to a primitive (simulating a digest-in-progress and avoiding an error)</div>
+			<div equals-binding-to-primitive-avoiding-digest-error model="countPrimitive" on-change="onChange()"></div>
 		</div>
 
+		<h3>Binding to an object (updating an entire object)</h3>
+
 		<div class="container">
-			<div>scope "=" binding to an object</div>
-			<div equals-binding-to-object model="obj" on-change="onChange()"></div>
+			<div>ng-model binding to an object (updating entire object) (simulating a digest-in-progress and avoiding an error)</div>
+			<div ng-model-binding-to-object-avoiding-digest-error ng-model="countObjectToBeEntirelyReplaced" ng-change="onChange()"></div>
+		</div>
+
+		<h3>Binding to an object (updating an object property)</h3>
+
+		<div class="container">
+			<div>scope "=" binding to an object (updating an object property)</div>
+			<div equals-binding-to-object-updating-property model="countObjectToHavePropertyUpdated" on-change="onChange()"></div>
 		</div>
 	</div>
 </body>
