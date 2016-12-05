@@ -20,6 +20,10 @@
 		<h3>Binding to a primitive (number)</h3>
 
 		<div class="container">
+			Controller value: {{ countPrimitive }}
+		</div>
+
+		<div class="container">
 			<div>ng-model binding to a primitive</div>
 			<div ng-model-binding-to-primitive ng-model="countPrimitive" ng-change="onChange()"></div>
 		</div>
@@ -42,11 +46,19 @@
 		<h3>Binding to an object (updating an entire object)</h3>
 
 		<div class="container">
+			Controller value: {{ countObjectToBeEntirelyReplaced }}
+		</div>
+
+		<div class="container">
 			<div>ng-model binding to an object (updating entire object) (simulating a digest-in-progress and avoiding an error)</div>
 			<div ng-model-binding-to-object-avoiding-digest-error ng-model="countObjectToBeEntirelyReplaced" ng-change="onChange()"></div>
 		</div>
 
 		<h3>Binding to an object (updating an object property)</h3>
+
+		<div class="container">
+			Controller value: {{ countObjectToHavePropertyUpdated }}
+		</div>
 
 		<div class="container">
 			<div>scope "=" binding to an object (updating an object property)</div>
