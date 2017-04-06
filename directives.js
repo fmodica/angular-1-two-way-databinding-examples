@@ -72,7 +72,7 @@
 
                         // Update the model. Any "ng-change" callback will execute after the
                         // model is updated. Use "$evalAsync" instead of "$apply" because the 
-                        // latter won't throw an "$apply already in progress" error if we are 
+                        // former won't throw an "$apply already in progress" error if we are 
                         // in the middle of a digest cycle, but it will schedule an additional 
                         // digest cycle if needed.
 
